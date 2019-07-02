@@ -4,10 +4,16 @@ import SignIn from '../pages/signIn'
 import SignUp from '../pages/signUp'
 import Main from '../pages/main'
 
-const Routes = createStackNavigator({
-  SignIn,
-  SignUp,
-  Main
-})
+const Routes = createStackNavigator(
+  {
+    SignIn,
+    SignUp,
+    Main
+  },
+  {
+    header: null,
+    headerMode: 'none'
+  }
+)
 
 export default Routes
