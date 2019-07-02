@@ -1,19 +1,29 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component } from 'react';
+import { View, Text } from 'react-native';
+import api from '../../services/api'
+import { AsyncStorage } from 'react-native'
+import { USER_AUTH } from '../../services/auth'
 
-export default function Main() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
-  );
+export default class Main extends Component {
+  state = {
+    user: {},
+    error: ''
+  }
+
+  async componentDidMount () {
+    const cduser = await AsyncStorage.getItem(USER_AUTH)
+    const usr = JSON.parse(cduser)
+    this.setState({ user: usr})
+  }
+
+  render() {
+    return (
+      <View>
+        
+        <Text> index </Text>
+        <Text>{this.state.user.username}</Text>
+        <Text>{this.state.user.email}</Text>
+      </View>
+    );
+  }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#c3c3c3',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

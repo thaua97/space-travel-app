@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 import { StatusBar, AsyncStorage } from 'react-native'
 import { StackActions, NavigationActions } from 'react-navigation'
 
+
 import api from '../../services/api'
+import { login, setUser } from '../../services/auth'
 
 import {
   Container,
@@ -33,7 +35,7 @@ export default class SignIn extends Component {
           dispatch: PropTypes.func
       }).isRequired 
     }
-  
+
      handleEmailChange = (email) => {
       this.setState({ email: email})
     }
@@ -51,12 +53,16 @@ export default class SignIn extends Component {
         this.setState({ error: 'Preencha as informações!' })
       } else {
         try {
+          
+          this.setState({ error: '' })
+          
           const res = await api.post('/signin', {
             email: this.state.email,
             password: this.state.password
           })
 
-          await AsyncStorage.setItem('@spaceTravelApp:token', res.data.token)
+          login(res.data.token.token)
+          setUser(res.data.user)
 
           const resetAction = StackActions.reset({
             index: 0,

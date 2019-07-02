@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getToken } from './auth'
 
 /**
 * Endereços para cada emulador
@@ -8,7 +9,15 @@ import axios from 'axios'
 */
 
 const api = axios.create({
-    baseURL: 'http://10.0.2.2:3333'
+    baseURL: 'https://space-travel-server.herokuapp.com'
+})
+
+api.interceptors.request.use( async config => {
+    const token = getToken()
+    if(token) {
+        config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
 })
 
 export default api
