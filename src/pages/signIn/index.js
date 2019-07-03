@@ -5,7 +5,7 @@ import { StackActions, NavigationActions } from 'react-navigation'
 
 
 import api from '../../services/api'
-import { login, setUser } from '../../services/auth'
+import { login, setUser, TOKEN_APP, USER_AUTH } from '../../services/auth'
 
 import {
   Container,
@@ -36,6 +36,23 @@ export default class SignIn extends Component {
       }).isRequired 
     }
 
+    async componentDidMount () {
+      const user = JSON.parse( await AsyncStorage.getItem('@SpaceApi:user'))
+      const token = await AsyncStorage.getItem('@SpaceApi:token')
+
+      if (token && user) {
+        const resetAction = StackActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({ routeName: 'Main' }),
+          ]
+        })
+
+        this.props.navigation.dispatch(resetAction)
+      }
+
+    }
+
      handleEmailChange = (email) => {
       this.setState({ email: email})
     }
@@ -55,14 +72,20 @@ export default class SignIn extends Component {
         try {
           
           this.setState({ error: '' })
-          
+
           const res = await api.post('/signin', {
             email: this.state.email,
             password: this.state.password
           })
 
-          login(res.data.token.token)
-          setUser(res.data.user)
+          
+          const token = res.data.token.token
+          const user = res.data.user
+
+          await AsyncStorage.multiSet([
+            ['@SpaceApi:token', token ],
+            ['@SpaceApi:user', JSON.stringify(user) ]
+          ])
 
           const resetAction = StackActions.reset({
             index: 0,
@@ -70,7 +93,9 @@ export default class SignIn extends Component {
               NavigationActions.navigate({ routeName: 'Main' }),
             ]
           })
+
           this.props.navigation.dispatch(resetAction)
+
         } catch (err) {
           this.setState({ error: `${err}`})
         }
