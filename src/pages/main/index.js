@@ -17,41 +17,55 @@ import {
   Logout,
   Temp
 } from './styles'
+import api from '../../services/api';
 
 export default class Main extends Component {
   state = {
     loggedInUser: [],
     error: null,
     clima: [],
-    city: []
+    city: [],
+    backpacks: [],
+    trips: [],
+    personalInfos: {}
   }
 
   async componentDidMount () {
+   
+      const user = JSON.parse( await AsyncStorage.getItem('@SpaceApi:user'))
+      const token = await AsyncStorage.getItem('@SpaceApi:token')
 
-    try {
-      const cl = await weather.get('/weather/locale/5326/current', {
-        params: {
-          "token": W_TOKEN
+      if (token && user ) {
+        this.setState({ loggedInUser: user, tokenAuth: token })
+      } else {
+        this.setState({ error: 'sem user'})
+      }
+    
+      try {
+        const { id } = this.state.loggedInUser
+        const res = await api.get(`/user/${id}`)
+        if(res.data) {
+          this.setState({
+            backpacks: res.data.backpacks,
+            trips: res.data.trips
+          })
         }
-      })
-      
-      this.setState({ clima: cl.data.data, city: cl.data })
-      
-      } catch(err) {
-        this.setState({ error: 'sem temperatu'})
+      } catch (err) {
+        
       }
 
-
-    const user = JSON.parse( await AsyncStorage.getItem('@SpaceApi:user'))
-    const token = await AsyncStorage.getItem('@SpaceApi:token')
-
-    if (token && user ) {
-      this.setState({ loggedInUser: user, tokenAuth: token })
-    } else {
-      this.setState({ error: 'sem user'})
-    }
-
-    
+      try {
+        const cl = await weather.get('/weather/locale/5326/current', {
+          params: {
+            "token": W_TOKEN
+          }
+        })
+        
+        this.setState({ clima: cl.data.data, city: cl.data })
+        
+        } catch(err) {
+          this.setState({ error: 'sem temperatu'})
+        }
   }
 
   handleLogout = async () => {
@@ -65,11 +79,19 @@ export default class Main extends Component {
     return (
       <Container>
         
-        <CardInfos>
-          <Logout onPress={this.handleLogout}>
-            <InfoNumb style={{ color: '#3c3c3c'}}>X</InfoNumb>
-          </Logout>
+        <CardInfos
+          source={require('../../../assets/amsterdam.jpg')}
+          overlayColor="#1F00DF"
+          overlayAlpha={0.8}
+          height={350} 
+          contentPosition="bottom"
+        >
+          
+
           <InfosContainer>
+            <Logout onPress={this.handleLogout}>
+              <InfoNumb style={{ color: '#3c3c3c'}}>X</InfoNumb>
+            </Logout>
             {this.state.error && <Text>{this.state.error}</Text>}
             <InfoText>{this.state.loggedInUser.username}</InfoText>
             <Button>
@@ -77,11 +99,11 @@ export default class Main extends Component {
             </Button>
             <InfosTrips>
               <InfoTripInfo>
-                <InfoNumb>10</InfoNumb>
+                <InfoNumb>{this.state.backpacks.length}</InfoNumb>
                 <InfoTitle>Malas Feitas</InfoTitle>
               </InfoTripInfo>
               <InfoTripInfo>
-                <InfoNumb>5</InfoNumb>
+                <InfoNumb>{this.state.trips.length}</InfoNumb>
                 <InfoTitle>Viagens</InfoTitle>
               </InfoTripInfo>
               <InfoTripInfo>
@@ -95,6 +117,7 @@ export default class Main extends Component {
         <Temp>{`${this.state.clima.temperature} ºc`}</Temp>
         <Temp>{this.state.city.name}</Temp>
         {this.state.error && <Temp>{this.state.error}</Temp>}
+        
       </Container>
     )
   }

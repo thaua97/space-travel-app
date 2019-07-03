@@ -1,4 +1,5 @@
 import styled from 'styled-components/native'
+import ImageOverlay from "react-native-image-overlay"
 
 export const Container = styled.View`
     backgroundColor: #FFF;
@@ -12,24 +13,14 @@ export const InfoText = styled.Text`
     fontSize: 24px;
     textAlign: center;
 `
-export const CardInfos = styled.View`
-    width: 100%;
-    height: 300px;
-    marginTop: 100px;
-    backgroundColor: #56C;
-    border-radius: 35;
-    shadow-color: #000;
-    shadow-offset: {width: 0; height: 30};
-    shadow-opacity: 0.8;
-    shadow-radius: 2;
-    elevation: 5;
+export const CardInfos = styled(ImageOverlay)`
 `
 export const InfosContainer = styled.View`
     flex: 1;
     alignItems: center;
     justifyContent: center;
     paddingHorizontal: 20px;
-    paddingVertical: 20px;
+    paddingVertical: 40px;
 `
 export const Button = styled.TouchableHighlight`
     height: 45px;

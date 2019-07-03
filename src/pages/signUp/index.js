@@ -17,6 +17,7 @@ import {
   SignUpLink,
   SignUpLinkText
 } from './styles'
+import ImageOverlay from 'react-native-image-overlay';
 
 navigationOptions = {
   header: null,
@@ -101,15 +102,23 @@ export default class signUp extends Component {
 
   render () {
     return (
+      <ImageOverlay
+        source={require("../../../assets/AuthBackground.jpg")}
+        overlayColor="#fff"
+        overlayAlpha={0.6}
+        height={'100%'} 
+        contentPosition="bottom"
+      >
       <Container>
         <StatusBar hidden/>
-        <Logo source={require('../../../assets/logo.png')} resizeMode="contain"/>
+        <Logo source={require('../../../assets/logoRegister.png')} resizeMode="contain"/>
         <Input
           placeholder="Nome do Usuario"
           value={this.state.username}
           onChangeText={this.handleUsernameChange}
           autoCapitalize="none"
           autoCorrect={false}
+          placeholderTextColor='#1F00DF'
         />
         <Input
           placeholder="Endereço de e-mail"
@@ -117,6 +126,7 @@ export default class signUp extends Component {
           onChangeText={this.handleEmailChange}
           autoCapitalize="none"
           autoCorrect={false}
+          placeholderTextColor='#1F00DF'
         />
         <Input 
             placeholder="Senha"
@@ -125,6 +135,7 @@ export default class signUp extends Component {
             autoCapitalize="none"
             autoCorrect={false}
             secureTextEntry
+            placeholderTextColor='#1F00DF'
         />
 
         {this.state.error.length !== 0 && <ErrorMessage>{this.state.error}</ErrorMessage>}
@@ -137,6 +148,7 @@ export default class signUp extends Component {
           <SignUpLinkText>Já possuo conta!</SignUpLinkText>
         </SignUpLink>
       </Container>
+      </ImageOverlay>
     )
   }
 }

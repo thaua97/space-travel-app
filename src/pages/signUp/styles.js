@@ -4,6 +4,7 @@ export const Container = styled.View`
     flex: 1;
     alignItems: center;
     justifyContent: center;
+    width: 100%;
 `
 
 export const Logo = styled.Image`
@@ -14,12 +15,13 @@ export const Logo = styled.Image`
 export const Input = styled.TextInput`
     paddingHorizontal: 20px;
     paddingVertical: 12px;
-    background-color: #FFF;
+    background-color: transparent;
     alignSelf: stretch;
     marginBottom: 15px;
     marginHorizontal: 20px;
     fontSize: 16px;
-    borderBottomColor: #6b166d;
+    borderBottomColor: #1F00DF;
+    color: #1F00DF;
     borderBottomWidth: 2;
 `
 export const Button = styled.TouchableHighlight`
@@ -44,8 +46,7 @@ export const ErrorMessage = styled.Text`
 `
 
 export const ButtonText = styled.Text`
-    color: #000;
-    fontWeight: bold;
+    color: #1F00DF;
     fontSize: 16px;
     textAlign: center;
 `

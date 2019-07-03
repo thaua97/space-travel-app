@@ -8,6 +8,7 @@ import api from '../../services/api'
 import { login, setUser, TOKEN_APP, USER_AUTH } from '../../services/auth'
 
 import {
+  Background,
   Container,
   Logo,
   Input,
@@ -104,9 +105,16 @@ export default class SignIn extends Component {
 
   render () {
     return (
+      <Background
+        source={require("../../../assets/AuthBackground.jpg")}
+        overlayColor="#1F00DF"
+        overlayAlpha={0.6}
+        height={'100%'} 
+        contentPosition="bottom"
+      >
       <Container>
         <StatusBar hidden/>
-        <Logo source={require('../../../assets/logo.png')} resizeMode="contain"/>
+        <Logo source={require('../../../assets/logoLogin.png')} resizeMode="contain"/>
         <Input
           placeholder="Endereço de e-mail"
           value={this.state.email}
@@ -133,6 +141,7 @@ export default class SignIn extends Component {
           <SignUpLinkText>Não possuo conta!</SignUpLinkText>
         </SignUpLink>
       </Container>
+      </Background>
     )
   }
 }
