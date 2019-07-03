@@ -1,4 +1,4 @@
-import styled from 'styled-components/native';
+import styled from 'styled-components';
 import ImageOverlay from 'react-native-image-overlay'
 
 export const Background = styled(ImageOverlay)`
