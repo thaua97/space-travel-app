@@ -57,14 +57,7 @@ export default class Main extends Component {
   handleLogout = async () => {
     await AsyncStorage.clear()
     
-    const resetAction = StackActions.reset({
-      index: 0,
-      actions: [
-        NavigationActions.navigate({ routeName: 'SignIn' }),
-      ]
-    })
-
-    this.props.navigation.dispatch(resetAction)
+    this.props.navigation.navigate(('SignIn'))
   }
 
 
